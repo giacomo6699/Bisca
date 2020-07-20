@@ -278,7 +278,7 @@ public class Partita extends AppCompatActivity {
             Log.d("MANIATTUALI", "" + maniattuali);
         Log.d("MANIMAZZIERE", "" + shgioc.getInt("Mazziere" + idmazziere, 0));
         Log.d("MAZZIEREID", "Mazziere" + idmazziere);
-            if (shgioc.getInt("Mazziere" + idmazziere, 0) == maniattuali){
+            if (shgioc.getInt("Mazziere" + idmazziere, 0) == maniattuali && maniattuali == 1){
                 Log.d("terzo", "si");
                 if (idmazziere == gioc)
                     idmazziere = 1;
