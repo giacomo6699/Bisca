@@ -38,7 +38,7 @@ public class Vincitore extends AppCompatActivity {
         BNRipeti.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //ci devo pensare
+                //ci devo pensare cavoli
             }
         });
     }
