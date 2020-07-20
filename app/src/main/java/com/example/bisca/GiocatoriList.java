@@ -55,6 +55,25 @@ public class GiocatoriList {
         return list;
     }
 
+    void sortByLives(){
+        for (int i = 0; i < getSize(); i++) {
+            int min = get(i).getVite();
+            Giocatore giocmin = get(i);
+            int minId = i;
+            for (int j = i+1; j < getSize(); j++) {
+                if (get(j).getVite() < min) {
+                    min = get(j).getVite();
+                    giocmin = get(j);
+                    minId = j;
+                }
+            }
+            // swapping
+            Giocatore temp = get(i);
+            list.set(i, giocmin);
+            list.set(minId, temp);
+        }
+    }
+
 }
 
 
