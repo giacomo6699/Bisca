@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#2196F3</color>
+    <color name="colorPrimaryDark">#3F51B5</color>
+    <color name="colorAccent">#039BE5</color>
+    <color name="textcolor">#EA252424</color>
+    <color name="viteverde">#0AB50D</color>
+    <color name="vitearancio">#F4A80F</color>
+    <color name="viterosso">#E30911</color>
+</resources>

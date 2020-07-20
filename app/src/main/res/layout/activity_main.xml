@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_margin="15dp">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foregroundTint="@color/colorAccent"
+        android:layout_gravity="center"
+        android:hint="Numero giocatori"
+        android:backgroundTint="@color/colorAccent"
+        android:textSize="20dp"
+        android:textColor="@color/textcolor"
+        android:id="@+id/ETNumGioc"
+        android:inputType="number"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/ETNumMani"
+        android:textSize="20dp"
+        android:foregroundTint="@color/colorAccent"
+        android:hint="Numero mani"
+        android:backgroundTint="@color/colorAccent"
+        android:textColor="@color/textcolor"
+        android:inputType="number"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/ETNumVite"
+        android:hint="Numero vite"
+        android:textColor="@color/textcolor"
+        android:foregroundTint="@color/colorAccent"
+        android:textSize="20dp"
+        android:backgroundTint="@color/colorAccent"
+        android:inputType="number"
+        android:layout_marginBottom="20dp"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/BNnuovaPartita"
+        android:textColor="@color/textcolor"
+        android:background="@drawable/rectangle"
+        android:elevation="4dp"
+        android:layout_marginTop="20dp"
+        android:text="Nuova Partita"/>
+
+</LinearLayout>
