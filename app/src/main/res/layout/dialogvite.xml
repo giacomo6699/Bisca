@@ -8,6 +8,16 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/ETImpostaNome"
+        android:layout_marginBottom="4dp"
+        android:foregroundTint="@color/colorAccent"
+        android:backgroundTint="@color/colorAccent"
+        android:textColor="@color/textcolor"
+        android:hint="Username"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/ETImpostaVite"
         android:foregroundTint="@color/colorAccent"
         android:backgroundTint="@color/colorAccent"

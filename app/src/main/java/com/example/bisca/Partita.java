@@ -163,14 +163,17 @@ public class Partita extends AppCompatActivity {
                 int vite = giocatorilist.get(i).getVite();
                 LayoutInflater mInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
                 final View layout = mInflater.inflate(R.layout.dialogvite, null, false);
-                final EditText ed = layout.findViewById(R.id.ETImpostaVite);
-                ed.setText("" + vite);
-                Dialog dialog = new AlertDialog.Builder(Partita.this).setCancelable(true).setView(layout).setTitle(Html.fromHtml("<b> Imposta Vite di " + nome + "</b>"))
+                final EditText edvite = layout.findViewById(R.id.ETImpostaVite);
+                final EditText edname = layout.findViewById(R.id.ETImpostaNome);
+                edvite.setText("" + vite);
+                edname.setText(nome);
+                Dialog dialog = new AlertDialog.Builder(Partita.this).setCancelable(true).setView(layout).setTitle(Html.fromHtml("<b> Imposta Dati di " + nome + "</b>"))
                         .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                if (!ed.getText().toString().isEmpty()){
-                                    giocatorilist.get(index).setVite(Integer.parseInt(ed.getText().toString()));
+                                if (!edvite.getText().toString().isEmpty() && !edname.getText().toString().isEmpty()){
+                                    giocatorilist.get(index).setVite(Integer.parseInt(edvite.getText().toString()));
+                                    giocatorilist.get(index).setName(edname.getText().toString());
                                     myadapter = new MyListAdapter(getApplicationContext(), R.layout.item_list, giocatorilist.getList());
                                     lista.setAdapter(myadapter);
                                 }
