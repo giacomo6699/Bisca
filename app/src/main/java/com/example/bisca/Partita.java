@@ -303,11 +303,30 @@ public class Partita extends AppCompatActivity {
             if (count > 1){
                 //non è ancora finita
             } else if (count == 1){
+                Dialog dialog = new AlertDialog.Builder(Partita.this).setMessage("Vuoi che il risultato di questa partita venga aggiunto all'albo dei vincitori?").setCancelable(false).setTitle(Html.fromHtml("<b> Albo </b>"))
+                        .setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Intent intent = new Intent(getApplicationContext(), Vincitore.class);
+                                intent.putExtra("Nome", getNomeVincitore());
+                                intent.putExtra("Albo", "Si");
+                                startActivity(intent);
+                                finish();
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Intent intent = new Intent(getApplicationContext(), Vincitore.class);
+                                intent.putExtra("Nome", getNomeVincitore());
+                                intent.putExtra("Albo", "No");
+                                startActivity(intent);
+                                finish();
+                            }
+                        })
+                        .create();
+                dialog.show();
                 //vincitore
-                Intent intent = new Intent(getApplicationContext(), Vincitore.class);
-                intent.putExtra("Nome", getNomeVincitore());
-                startActivity(intent);
-                finish();
             } else {
                 //nessuno ha vinto! pareggio!
                 Intent intent = new Intent(getApplicationContext(), Vincitore.class);

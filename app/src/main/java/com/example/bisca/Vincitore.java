@@ -25,12 +25,18 @@ public class Vincitore extends AppCompatActivity {
     DatabaseReference DATARef;
     DataSnapshot DATABASE;
     boolean datadone = false;
+    boolean albo = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vincitore);
         final String nome = getIntent().getExtras().getString("Nome");
+        String alboextra = getIntent().getExtras().getString("Albo");
+        if (alboextra.equals("Si"))
+            albo = true;
+        else
+            albo = false;
         DATARef = FirebaseDatabase.getInstance().getReference();
         DATARef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -45,7 +51,7 @@ public class Vincitore extends AppCompatActivity {
                         Log.d("IDDATABASE", data.getKey());
                         Log.d("VALUEDATABASE", "" + data.getValue());
                         if (!data.getKey().equals("Size")) {
-                            if (data.getKey().toLowerCase().equals(nome.toLowerCase())) {
+                            if (data.getKey().toLowerCase().equals(nome.toLowerCase()) && albo) {
                                 //bisogna solo incrementare di uno il contatore delle vincite del giocatore
                                 done = true;
                                 int counter = Integer.parseInt(data.getValue().toString()) + 1;
@@ -70,7 +76,8 @@ public class Vincitore extends AppCompatActivity {
                     for (int i = albogiocatori.getSize() - 1; i >= 0; i--) {
                         alboordinato.add(albogiocatori.get(i));
                     }
-                    DATARef.child("Vincitori").updateChildren(mapvalues);
+                    if (albo)
+                        DATARef.child("Vincitori").updateChildren(mapvalues);
                     TextView tv1posto = (TextView) findViewById(R.id.PrimoPosto);
                     TextView tv2posto = (TextView) findViewById(R.id.SecondoPosto);
                     TextView tv3posto = (TextView) findViewById(R.id.TerzoPosto);
