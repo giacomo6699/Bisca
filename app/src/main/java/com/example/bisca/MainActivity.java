@@ -99,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), Vincitore.class);
             intent.putExtra("Nome", "Albo");
             intent.putExtra("Albo", "No");
+            startActivity(intent);
         }
         return true;
     }
