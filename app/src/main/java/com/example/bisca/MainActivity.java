@@ -86,14 +86,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
-        Dialog dialog = new AlertDialog.Builder(MainActivity.this).setMessage(Html.fromHtml("Icons by Icons8 - <b> https://icons8.com </b>")).setCancelable(true).setTitle("Info")
-                .setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
-                    }
-                }).create();
-        dialog.show();
+        if (item.getItemId() == R.id.menuinfo) {
+            Dialog dialog = new AlertDialog.Builder(MainActivity.this).setMessage(Html.fromHtml("Icons by Icons8 - <b> https://icons8.com </b>")).setCancelable(true).setTitle("Info")
+                    .setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    }).create();
+            dialog.show();
+        } else {
+            Intent intent = new Intent(getApplicationContext(), Vincitore.class);
+            intent.putExtra("Nome", "Albo");
+            intent.putExtra("Albo", "No");
+        }
         return true;
     }
 

@@ -64,7 +64,7 @@ public class Vincitore extends AppCompatActivity {
                             //allora aggiungi alla lista il nome del giocatore (data.getKey()) e le sue vincite (data.getValue())
                         }
                     }
-                    if (!done) {
+                    if (!done && albo) {
                         //aggiungere un nuovo giocatore nell'albo, impostare il suo contatore a 1 e incrementare Size
                         int size = Integer.parseInt(DATABASE.child("Vincitori").child("Size").getValue().toString()) + 1;
                         mapvalues.put(nome, "1");
@@ -110,6 +110,9 @@ public class Vincitore extends AppCompatActivity {
         if (nome.equals("Pareggio")){
             //è finita in pareggio
             tv.setText("La partità è finita in pareggio");
+        } else if (nome.equals("Albo")) {
+            //si vuole vedere solo l'albo
+            tv.setText("");
         } else {
             //abbiamo un vincitore
             tv.setText(Html.fromHtml("<b>" + nome + "</b>" + " ha vinto!"));
