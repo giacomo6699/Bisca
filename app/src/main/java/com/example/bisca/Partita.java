@@ -17,9 +17,13 @@ import androidx.appcompat.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -44,15 +48,22 @@ public class Partita extends AppCompatActivity {
         setContentView(R.layout.activity_partita);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        TextView tvmazz = findViewById(R.id.TVMazziere);
-        TextView tvcarte = findViewById(R.id.TVNumCarte);
         SharedPreferences sharedPreferences = getSharedPreferences("InfoGenerali", MODE_PRIVATE);
         giocatori = sharedPreferences.getInt("Numero Giocatori", 0);
         mani = sharedPreferences.getInt("Numero Mani", 0);
         vite = sharedPreferences.getInt("Numero Vite", 0);
         giocatorilist = new GiocatoriList();
         final ListView lista = findViewById(R.id.listView);
-        for (int i = giocatori; i > 0; i--){
+        int playersnumber = Integer.parseInt(getIntent().getExtras().getString("PlayersNumber"));
+        for (int i = 1; i <= playersnumber; i++){
+            String name = getIntent().getExtras().getString("Player" + i);
+            String frase = getIntent().getExtras().getString(name);
+            giocatorilist.add(new Giocatore(name, vite, frase));
+        }
+        myadapter = new MyListAdapter(getApplicationContext(), R.layout.item_list, giocatorilist.getList());
+        lista.setAdapter(myadapter);
+        setTextMazziere();
+        /*for (int i = giocatori; i > 0; i--){
             LayoutInflater mInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
             final View view = mInflater.inflate(R.layout.dialog, null, false);
 
@@ -78,7 +89,7 @@ public class Partita extends AppCompatActivity {
                         }
                     }).create();
                     dialog.show();
-        }
+        }*/
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,7 +111,7 @@ public class Partita extends AppCompatActivity {
                                         if (vitegioc == 1)
                                             Toast.makeText(Partita.this, n + " è stato eliminato.", Toast.LENGTH_SHORT).show();
                                         if (vitegioc == 2)
-                                            Toast.makeText(Partita.this, n + " sta a pezzi", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(Partita.this, giocatorilist.get(e - 1).getFrase(), Toast.LENGTH_LONG).show();
                                         giocatorilist.getFromName(n).decrementaVite();
                                         myadapter = new MyListAdapter(getApplicationContext(), R.layout.item_list, giocatorilist.getList());
                                         lista.setAdapter(myadapter);
@@ -173,7 +184,7 @@ public class Partita extends AppCompatActivity {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 if (!edvite.getText().toString().isEmpty() && !edname.getText().toString().isEmpty()){
                                     giocatorilist.get(index).setVite(Integer.parseInt(edvite.getText().toString()));
-                                    giocatorilist.get(index).setName(edname.getText().toString());
+                                    giocatorilist.get(index).setName(edname.getText().toString().toUpperCase());
                                     myadapter = new MyListAdapter(getApplicationContext(), R.layout.item_list, giocatorilist.getList());
                                     lista.setAdapter(myadapter);
                                 }
@@ -225,6 +236,16 @@ public class Partita extends AppCompatActivity {
                 return true;
             }
         });
+        /*ImageView imginfamate = findViewById(R.id.ImgInfamate);
+        imginfamate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int red= 255;
+                int green= 0;
+                int blue= 0;
+                ThemeColors.setNewThemeColor(Partita.this, red, green, blue);
+            }
+        });*/
     }
 
     public void setTextMazziere(){
@@ -283,10 +304,12 @@ public class Partita extends AppCompatActivity {
         Log.d("MAZZIEREID", "Mazziere" + idmazziere);
             if (shgioc.getInt("Mazziere" + idmazziere, 0) == maniattuali && maniattuali == 1){
                 Log.d("terzo", "si");
-                if (idmazziere == gioc)
-                    idmazziere = 1;
-                else
-                    idmazziere++;
+                while (giocatorilist.get(idmazziere - 1).getVite() == 0 && !isFinished()) {
+                    if (idmazziere == gioc)
+                        idmazziere = 1;
+                    else
+                        idmazziere++;
+                }
                 editorgioc.putInt("Mazziere" + idmazziere, maniattuali);
             } else {
                 editorgioc.putInt("Mazziere" + idmazziere, maniattuali);
@@ -365,6 +388,56 @@ public class Partita extends AppCompatActivity {
             if (giocatorilist.get(i).getVite() > 0){
                 return false;
             }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menupartita, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        if (item.getItemId() == R.id.menuadd) {
+            LayoutInflater mInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            final View layout = mInflater.inflate(R.layout.dialogvite, null, false);
+            Dialog dialog = new AlertDialog.Builder(Partita.this).setView(layout).setCancelable(true).setTitle("Nuovo Giocatore")
+                    .setPositiveButton("Aggiungi", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            EditText ednome = (EditText) layout.findViewById(R.id.ETImpostaNome);
+                            EditText edvite = (EditText) layout.findViewById(R.id.ETImpostaVite);
+                            String nome = ednome.getText().toString().toUpperCase();
+                            Log.d("Vite nuovo giocatore", edvite.getText().toString());
+                            int vite = Integer.parseInt(edvite.getText().toString());
+                            giocatori++;
+                            if (2 <= giocatori && giocatori <= 13 && 3 <= mani && mani <= 20 && mani*giocatori <= 40 && vite >= 1) {
+                                //aggiungi giocatore
+                                SharedPreferences sh = getSharedPreferences("InfoGenerali", MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sh.edit();
+                                editor.putInt("Numero Giocatori", giocatori);
+                                editor.commit();
+                                giocatorilist.add(new Giocatore(nome, vite));
+                                myadapter = new MyListAdapter(getApplicationContext(), R.layout.item_list, giocatorilist.getList());
+                                ListView lista = (ListView) findViewById(R.id.listView);
+                                lista.setAdapter(myadapter);
+                            } else {
+                                giocatori--;
+                                Toast.makeText(Partita.this, "Il giocatore non può essere aggiunto, limite raggiunto.", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    })
+                    .setNegativeButton("Annulla", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    }).create();
+            dialog.show();
         }
         return true;
     }

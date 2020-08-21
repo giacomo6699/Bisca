@@ -3,10 +3,18 @@ package com.example.bisca;
 public class Giocatore {
     private String nome;
     private int vite;
+    private String frase;
+
+    public Giocatore(String n, int v, String f){
+        nome = n;
+        vite = v;
+        frase = f;
+    }
 
     public Giocatore(String n, int v){
         nome = n;
         vite = v;
+        frase = "A PEZZI";
     }
 
     String getName(){
@@ -25,6 +33,14 @@ public class Giocatore {
 
     void setVite(int v){
         vite = v;
+    }
+
+    String getFrase(){
+        return frase;
+    }
+
+    void setFrase(String f){
+        frase = f;
     }
 
     void decrementaVite(){

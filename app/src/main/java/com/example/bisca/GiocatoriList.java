@@ -74,6 +74,10 @@ public class GiocatoriList {
         }
     }
 
+    void clear(){
+        list.clear();
+    }
+
 }
 
 

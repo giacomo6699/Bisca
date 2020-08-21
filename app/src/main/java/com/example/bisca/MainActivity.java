@@ -61,12 +61,12 @@ public class MainActivity extends AppCompatActivity {
                         SharedPreferences sh = getSharedPreferences("InfoGenerali", MODE_PRIVATE);
                         SharedPreferences.Editor editor = sh.edit();
                         editor.putInt("Numero Giocatori", gioc);
-                        editor.putInt("Numero Mani", mani);
+                        editor.putInt("Numero Mani",  mani);
                         editor.putInt("Numero Vite", vite);
                         editor.putInt("Mani Attuali", mani);
                         editor.putInt("Giocatori Attuali", gioc);
                         editor.commit();
-                        Intent cio = new Intent(getApplicationContext(), Partita.class);
+                        Intent cio = new Intent(getApplicationContext(), Players.class);
                         startActivity(cio);
                         finish();
                     } else
