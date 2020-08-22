@@ -141,7 +141,7 @@ public class Partita extends AppCompatActivity {
                                 text.setText(checkedplayers.get(i).getFrase());
 
                                 Toast toast = new Toast(getApplicationContext());
-                                toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                                toast.setGravity(Gravity.BOTTOM, 0, 350);
                                 toast.setDuration(Toast.LENGTH_LONG);
                                 toast.setView(layout);
                                 toast.show();
