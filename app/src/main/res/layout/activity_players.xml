@@ -26,9 +26,9 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         app:fabSize="normal"
-        app:maxImageSize="40dp"
+        app:maxImageSize="35dp"
         android:scaleType="center"
-        app:fabCustomSize="65dp"
+        app:fabCustomSize="60dp"
         android:src="@drawable/add" />
 
     <include layout="@layout/content_players" />

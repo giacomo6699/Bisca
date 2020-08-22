@@ -16,11 +16,13 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.text.Html;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -31,6 +33,7 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Partita extends AppCompatActivity {
@@ -91,7 +94,8 @@ public class Partita extends AppCompatActivity {
                     dialog.show();
         }*/
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        ImageView imgfine = findViewById(R.id.BNFineRound);
+        imgfine.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final SharedPreferences sharedPreferences = getSharedPreferences("InfoGenerali", MODE_PRIVATE);
@@ -99,7 +103,61 @@ public class Partita extends AppCompatActivity {
                 final SharedPreferences.Editor editorgen = sharedPreferences.edit();
                 final SharedPreferences.Editor editorgioc = shgioc.edit();
 
-                for (int i = giocatori; i > 0; i--){
+                AlertDialog.Builder builder = new AlertDialog.Builder(Partita.this);
+                builder.setTitle("Chi ha perso una vita?");
+
+                String[] players = new String[giocatorilist.getSize()];
+                boolean[] checkedItems = new boolean[giocatorilist.getSize()];
+                for (int i = 0; i < giocatorilist.getSize(); i++){
+                    players[i] = giocatorilist.get(i).getName();
+                    checkedItems[i] = false;
+                }
+                final ArrayList<Giocatore> checkedplayers = new ArrayList<>();
+                builder.setMultiChoiceItems(players, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                        if (isChecked)
+                            checkedplayers.add(giocatorilist.get(which));
+                        else
+                            checkedplayers.remove(giocatorilist.get(which));
+                    }
+                });
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        for (int i = 0; i < checkedplayers.size(); i++){
+                            String n = checkedplayers.get(i).getName();
+                            int vitegioc = checkedplayers.get(i).getVite();
+                            if (vitegioc == 1)
+                                Toast.makeText(Partita.this, n + " è stato eliminato.", Toast.LENGTH_SHORT).show();
+                            if (vitegioc == 2) {
+                                //Toast.makeText(Partita.this, checkedplayers.get(i).getFrase(), Toast.LENGTH_LONG).show();
+                                LayoutInflater inflater = getLayoutInflater();
+
+                                View layout = inflater.inflate(R.layout.custom_toast,
+                                        (ViewGroup) findViewById(R.id.custom_toast_layout_id));
+
+                                TextView text = (TextView) layout.findViewById(R.id.TVToast);
+                                text.setText(checkedplayers.get(i).getFrase());
+
+                                Toast toast = new Toast(getApplicationContext());
+                                toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                                toast.setDuration(Toast.LENGTH_LONG);
+                                toast.setView(layout);
+                                toast.show();
+                            }
+                            checkedplayers.get(i).decrementaVite();
+                            myadapter = new MyListAdapter(getApplicationContext(), R.layout.item_list, giocatorilist.getList());
+                            lista.setAdapter(myadapter);
+                        }
+                        AggiornamentoGenerali();
+                    }
+                });
+                builder.setNegativeButton("Cancel", null);
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+                /*for (int i = giocatori; i > 0; i--){
                     String nome = giocatorilist.get(i-1).getName();
                     if (giocatorilist.get(i-1).getVite() != 0) {
                         Dialog dialog = new AlertDialog.Builder(Partita.this).setCancelable(false).setMessage(Html.fromHtml("<b>" + nome + "</b>" + " ha perso una vita?")).setTitle(Html.fromHtml("<b> Fine Round </b>"))
@@ -161,7 +219,7 @@ public class Partita extends AppCompatActivity {
                                 }).create();
                         dialog.show();
                     }
-                }
+                }*/
 
             }
         });

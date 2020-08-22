@@ -28,8 +28,9 @@
         android:layout_margin="@dimen/fab_margin"
         app:fabSize="normal"
         app:maxImageSize="56dp"
+        android:visibility="gone"
         android:scaleType="center"
-        app:fabCustomSize="90dp"
+        app:fabCustomSize="60dp"
         android:src="@drawable/cards"/>
 
     <include layout="@layout/content_partita" />

@@ -49,10 +49,40 @@
 
     </RelativeLayout>
 
-    <ListView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:divider="#00FFFFFF"
-        android:id="@+id/listView"/>
+        android:layout_height="wrap_content"
+        android:gravity="bottom">
+
+        <ImageView
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="10dp"
+            android:layout_above="@+id/tvmargin"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/circlefab"
+            android:id="@+id/BNFineRound"
+            android:elevation="7dp"
+            android:padding="17dp"
+            android:src="@drawable/cards"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="6dp"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/tvmargin"
+            android:layout_alignParentBottom="true"/>
+
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:divider="#00FFFFFF">
+
+        </ListView>
+
+    </RelativeLayout>
 
 </LinearLayout>
