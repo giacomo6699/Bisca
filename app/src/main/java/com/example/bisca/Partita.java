@@ -66,33 +66,6 @@ public class Partita extends AppCompatActivity {
         myadapter = new MyListAdapter(getApplicationContext(), R.layout.item_list, giocatorilist.getList());
         lista.setAdapter(myadapter);
         setTextMazziere();
-        /*for (int i = giocatori; i > 0; i--){
-            LayoutInflater mInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-            final View view = mInflater.inflate(R.layout.dialog, null, false);
-
-            Dialog dialog = new AlertDialog.Builder(Partita.this).setView(view).setCancelable(false).setTitle(Html.fromHtml("<b> Giocatore" + i + "</b>"))
-                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            EditText ed = view.findViewById(R.id.ETDialog);
-                            String name;
-                            if (ed.getText().toString().isEmpty()){
-                                name = "Giocatore" + d;
-                            } else {
-                                name = ed.getText().toString().toUpperCase();
-                            }
-                            Giocatore g = new Giocatore(name, vite);
-                            giocatorilist.add(g);
-                            myadapter = new MyListAdapter(getApplicationContext(), R.layout.item_list, giocatorilist.getList());
-                            lista.setAdapter(myadapter);
-                            d++;
-                            if (d > giocatori) {
-                                setTextMazziere();
-                            }
-                        }
-                    }).create();
-                    dialog.show();
-        }*/
         FloatingActionButton fab = findViewById(R.id.fab);
         ImageView imgfine = findViewById(R.id.BNFineRound);
         imgfine.setOnClickListener(new View.OnClickListener() {
@@ -106,20 +79,24 @@ public class Partita extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(Partita.this);
                 builder.setTitle("Chi ha perso una vita?");
 
-                String[] players = new String[giocatorilist.getSize()];
-                boolean[] checkedItems = new boolean[giocatorilist.getSize()];
+                final String[] players = new String[ingioco()];
+                final boolean[] checkedItems = new boolean[ingioco()];
+                int counter = 0;
                 for (int i = 0; i < giocatorilist.getSize(); i++){
-                    players[i] = giocatorilist.get(i).getName();
-                    checkedItems[i] = false;
+                    if (giocatorilist.get(i).getVite() > 0){
+                        players[counter] = giocatorilist.get(i).getName();
+                        checkedItems[counter] = false;
+                        counter++;
+                    }
                 }
                 final ArrayList<Giocatore> checkedplayers = new ArrayList<>();
                 builder.setMultiChoiceItems(players, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                         if (isChecked)
-                            checkedplayers.add(giocatorilist.get(which));
+                            checkedplayers.add(giocatorilist.getFromName(players[which]));
                         else
-                            checkedplayers.remove(giocatorilist.get(which));
+                            checkedplayers.remove(giocatorilist.getFromName(players[which]));
                     }
                 });
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -134,8 +111,7 @@ public class Partita extends AppCompatActivity {
                                 //Toast.makeText(Partita.this, checkedplayers.get(i).getFrase(), Toast.LENGTH_LONG).show();
                                 LayoutInflater inflater = getLayoutInflater();
 
-                                View layout = inflater.inflate(R.layout.custom_toast,
-                                        (ViewGroup) findViewById(R.id.custom_toast_layout_id));
+                                View layout = inflater.inflate(R.layout.custom_toast, (ViewGroup) findViewById(R.id.custom_toast_layout_id));
 
                                 TextView text = (TextView) layout.findViewById(R.id.TVToast);
                                 text.setText(checkedplayers.get(i).getFrase());
@@ -156,70 +132,6 @@ public class Partita extends AppCompatActivity {
                 builder.setNegativeButton("Cancel", null);
                 AlertDialog dialog = builder.create();
                 dialog.show();
-
-                /*for (int i = giocatori; i > 0; i--){
-                    String nome = giocatorilist.get(i-1).getName();
-                    if (giocatorilist.get(i-1).getVite() != 0) {
-                        Dialog dialog = new AlertDialog.Builder(Partita.this).setCancelable(false).setMessage(Html.fromHtml("<b>" + nome + "</b>" + " ha perso una vita?")).setTitle(Html.fromHtml("<b> Fine Round </b>"))
-                                .setPositiveButton("Si", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        String n = giocatorilist.get(e - 1).getName();
-                                        int vitegioc = giocatorilist.get(e - 1).getVite();
-                                        if (vitegioc == 1)
-                                            Toast.makeText(Partita.this, n + " è stato eliminato.", Toast.LENGTH_SHORT).show();
-                                        if (vitegioc == 2)
-                                            Toast.makeText(Partita.this, giocatorilist.get(e - 1).getFrase(), Toast.LENGTH_LONG).show();
-                                        giocatorilist.getFromName(n).decrementaVite();
-                                        myadapter = new MyListAdapter(getApplicationContext(), R.layout.item_list, giocatorilist.getList());
-                                        lista.setAdapter(myadapter);
-                                        e++;
-                                        if (e > giocatori){
-                                            e = 1;
-                                            AggiornamentoGenerali();
-                                        }
-                                    }
-                                })
-                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        e++;
-                                        if (e > giocatori) {
-                                            e = 1;
-                                            AggiornamentoGenerali();
-                                        }
-                                    }
-                                }).create();
-                        dialog.show();
-                    } else {
-                        Dialog dialog = new AlertDialog.Builder(Partita.this).setCancelable(false).setMessage(Html.fromHtml("Regalare una vita a " +"<b>" + nome + "</b>")).setTitle(Html.fromHtml("<b> Fine Round </b>"))
-                                .setPositiveButton("Si", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        //ridai una vita
-                                        giocatorilist.get(e-1).setVite(1);
-                                        myadapter = new MyListAdapter(getApplicationContext(), R.layout.item_list, giocatorilist.getList());
-                                        lista.setAdapter(myadapter);
-                                        e++;
-                                        if (e > giocatori) {
-                                            e = 1;
-                                            AggiornamentoGenerali();
-                                        }
-                                    }
-                                })
-                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        e++;
-                                        if (e > giocatori) {
-                                            e = 1;
-                                            AggiornamentoGenerali();
-                                        }
-                                    }
-                                }).create();
-                        dialog.show();
-                    }
-                }*/
 
             }
         });
