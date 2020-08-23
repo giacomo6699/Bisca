@@ -391,6 +391,7 @@ public class Partita extends AppCompatActivity {
                                 SharedPreferences.Editor editor = sh.edit();
                                 editor.putInt("Numero Giocatori", giocatori);
                                 editor.commit();
+
                                 giocatorilist.add(new Giocatore(nome, vite));
                                 myadapter = new MyListAdapter(getApplicationContext(), R.layout.item_list, giocatorilist.getList());
                                 ListView lista = (ListView) findViewById(R.id.listView);

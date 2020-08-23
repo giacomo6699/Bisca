@@ -14,4 +14,10 @@
         android:title="info"
         app:showAsAction="always" />
 
+    <item
+        android:id="@+id/menuregolamento"
+        android:icon="@android:drawable/ic_menu_sort_by_size"
+        android:title="Regolamento"
+        app:showAsAction="always" />
+
 </menu>

@@ -95,6 +95,9 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }).create();
             dialog.show();
+        } else if (item.getItemId() == R.id.menuregolamento) {
+            Intent intent = new Intent(getApplicationContext(), Regolamento.class);
+            startActivity(intent);
         } else {
             Intent intent = new Intent(getApplicationContext(), Vincitore.class);
             intent.putExtra("Nome", "Albo");
