@@ -4,6 +4,7 @@ public class Giocatore {
     private String nome;
     private int vite;
     private String frase;
+    private boolean esclamazione = false;
 
     public Giocatore(String n, int v, String f){
         nome = n;
@@ -41,6 +42,14 @@ public class Giocatore {
 
     void setFrase(String f){
         frase = f;
+    }
+
+    boolean getEsclazione(){
+        return esclamazione;
+    }
+
+    void setEsclamazione(boolean e){
+        esclamazione = e;
     }
 
     void decrementaVite(){

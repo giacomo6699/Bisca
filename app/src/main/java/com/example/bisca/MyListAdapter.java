@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -30,11 +31,19 @@ public class MyListAdapter extends ArrayAdapter<Giocatore> {
             TextView vitegioc = convertView.findViewById(R.id.TVItemVite);
             nomegioc.setTypeface(Typeface.createFromAsset(getContext().getAssets(), "fonts/montserratregular.ttf"));
             vitegioc.setTypeface(Typeface.createFromAsset(getContext().getAssets(), "fonts/montserratmedium.ttf"));
+            Giocatore c = getItem(position);
             if ((position % 2) == 0){
                 linear.setBackgroundResource(R.drawable.rectanglecolor);
                 nomegioc.setTextColor(Color.parseColor("#FFFFFFFF"));
+                TextView tvescl = convertView.findViewById(R.id.TVEsclamazione);
+                ImageView imgpunt = convertView.findViewById(R.id.message_tail);
+                ImageView imgspazio = convertView.findViewById(R.id.IMSpazioinPiu);
+                tvescl.setBackgroundResource(R.drawable.rectangle);
+                tvescl.setTextColor(Color.parseColor("#EA252424"));
+                tvescl.setText(c.getFrase());
+                imgpunt.setImageResource(R.drawable.puntinabianca);
+                imgspazio.setImageResource(R.drawable.rectangle);
             }
-            Giocatore c = getItem(position);
 
             SharedPreferences sh = getContext().getSharedPreferences("InfoGenerali", getContext().MODE_PRIVATE);
             int vitetotali = sh.getInt("Numero Vite", 0);

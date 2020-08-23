@@ -1,9 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.bisca.Regolamento">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginLeft="4dp"
+            android:scrollbars="vertical"
+            android:text="Innanzitutto bisogna specificare che a Bisca le carte hanno una gerarchia.
+\nL'ordine delle carte, da quelle piu deboli a quelle piu forti, è: bastoni - spade - coppe - denari.
+\nInoltre anche le carte dello stesso seme hanno diversa forza. Le carte con il numero piu alto infatti sono piu forti delle carte con numero minore.
+L'ordine finale delle carte è quindi composto, in ordine crescente di forza, dai 10 bastoni (in ordine dall'asso al re), le 10 spade, le 10 coppe e infine i 10 denari.
+\nEsiste una carta però che può comportarsi in modo differente a seconda della scelta di chi la tira: l'asso di ori. Questa carta infatti può, a discrezione del giocatore che la tira, valere più del re di ori oppure meno dell'asso di bastoni.
+\nIl gioco si compone generalmente di 5 turni (si può impostare nella schermata iniziale scrivendo nella sezione 'Numero di mani') che si ripetono fino a che non rimane un solo giocatore in vita.
+\nI 5 turni si differenziano per il numero di carte:
+\n- Nel primo turno si consegnano 5 carte ad ogni giocatore.
+\n- Nel secondo si consegnano 4 carte
+\n- poi 3, 2 e infine 1 carta a testa.
+\nAll'inizio di ogni turno i giocatori dovranno ipotizzare, a seconda delle carte che possiedono, quante mani secondo loro vinceranno. Ciò viene fatto in ordine antiorario partendo da colui che sta alla destra del mazziere.
+Alla fine di questo giro di 'chiamate' l'ultimo a ipotizzare sarà il mazziere che però ha una limitazione: la somma delle chiamate di tutti i giocatori infatti non può essere uguale al numero di carte del turno di gioco quindi egli non potrà dire un numero specifico.
+\n\n
+ESEMPI:
+\n8 giocatori, turno da 5 carte
+\n- La somma dei numeri chiamati dai primi 7 giocatori fa 4, allora il mazziere potrà dire qualunque numero tranne il numero 1.
+\n- La somma dei numeri chiamati dai primi 7 giocatori fa 5, allora il mazziere potrà dire qualsiasi numero che non sia lo 0.
+\n- La somma dei numeri chiamati dai primi 7 è > 5 allora il mazziere potrà dire qualunque numero voglia.
+\n8 giocatori, turno da 3 carte
+\n- La somma dei numeri chiamati dai primi 7 giocatori fa 2, allora il mazziere potrà dire qualunque numero tranne il numero 1.
+\n- La somma dei numeri chiamati dai primi 7 giocatori fa 3, allora il mazziere potrà dire qualsiasi numero che non sia lo 0.
+\n- La somma dei numeri chiamati dai primi 7 è > 3 allora il mazziere potrà dire qualunque numero voglia.
+\n\n
+Alla fine di questa fase inizia il gioco e, sempre partendo dalla persona a destra del mazziere, ogni giocatore dovrà tirare una carta tenendo in testa il suo obiettivo: vincere esattamente il numero di mani che aveva dichiarato precedentemente, nè più nè meno.
+\nQuando tutti i giocatori avranno tirato una carta quella mano sarà vinta da colui che ha tirato la carta piu forte.
+\nLa mano successiva verrà svolta partendo da colui che ha vinto la mano precedente e procedendo in senso antiorario.
+\nQuesto si ripete fino a che i giocatori non avranno più nessuna carta in mano e, a quel punto, i giocatori che non hanno vinto abbastanza mani o ne hanno vinte troppe rispetto al numero che avevano dichiarato perderanno una vita mentre gli altri non perderanno nulla.
+\nUn giocatore che arriva ad avere 0 vite viene eliminato dal gioco.
+\nIl turno di gioco con una carta si svolge differentemente: quando ogni giocatore riceverà la propria carta, non dovrà guardarla ma dovrà mostrarla agli altri ponendola sulla propria fronte.
+A questo punto ogni giocatore dovrà dire se con la propria carta vincerà o perderà a seconda delle carte che hanno gli altri.
+\nN.B. In questo turno se un solo giocatore dice 'vinco' allora il mazziere sarà costretto a dire 'vinco' mentre se tutti diranno 'perdo' anche il mazziere dovrà dire 'perdo'.\n\n"
+            android:textSize="16.5dp"/>
+
+    </ScrollView>
+
+</LinearLayout>
