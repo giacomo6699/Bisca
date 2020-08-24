@@ -36,6 +36,7 @@
             android:layout_weight="0.35"
             android:layout_height="wrap_content"
             android:text='"A PEZZI"'
+            android:gravity="center"
             android:textColor="#D3333232"
             android:layout_gravity="bottom"
             android:layout_marginLeft="5dp"

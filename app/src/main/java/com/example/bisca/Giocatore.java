@@ -5,11 +5,13 @@ public class Giocatore {
     private int vite;
     private String frase;
     private boolean esclamazione = false;
+    int cartemesc;
 
     public Giocatore(String n, int v, String f){
         nome = n;
         vite = v;
         frase = f;
+        cartemesc = 0;
     }
 
     public Giocatore(String n, int v){
@@ -56,6 +58,14 @@ public class Giocatore {
         if (vite != 0){
             vite--;
         }
+    }
+
+    int getCartemesc(){
+        return cartemesc;
+    }
+
+    void setCartemesc(int c){
+        cartemesc = c;
     }
 
 }

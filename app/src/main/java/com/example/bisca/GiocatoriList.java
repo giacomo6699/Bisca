@@ -21,10 +21,14 @@ public class GiocatoriList {
 
     Giocatore getFromName(String n){
         for (int i = 0; i < this.getSize(); i++){
-            if (list.get(i).getName().equals(n))
+            if (list.get(i).getName().toLowerCase().equals(n.toLowerCase()))
                 return list.get(i);
         }
         return null;
+    }
+
+    int indexOf(Giocatore g){
+        return list.indexOf(g);
     }
 
     boolean remove(Giocatore g){
@@ -45,6 +49,10 @@ public class GiocatoriList {
                 return true;
         }
         return false;
+    }
+
+    void add(int index, Giocatore g){
+        list.add(index, g);
     }
 
     int getSize(){

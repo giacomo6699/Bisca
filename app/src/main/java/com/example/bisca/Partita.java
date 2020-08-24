@@ -9,11 +9,15 @@ import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.mobeta.android.dslv.DragSortListView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
@@ -21,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -44,6 +49,7 @@ public class Partita extends AppCompatActivity {
     int mani;
     int vite;
     GiocatoriList giocatorilist;
+    int IDMAZZCHOSEN;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +62,7 @@ public class Partita extends AppCompatActivity {
         mani = sharedPreferences.getInt("Numero Mani", 0);
         vite = sharedPreferences.getInt("Numero Vite", 0);
         giocatorilist = new GiocatoriList();
-        final ListView lista = findViewById(R.id.listView);
+        final DragSortListView lista = findViewById(R.id.listView);
         int playersnumber = Integer.parseInt(getIntent().getExtras().getString("PlayersNumber"));
         for (int i = 1; i <= playersnumber; i++){
             String name = getIntent().getExtras().getString("Player" + i);
@@ -109,7 +115,7 @@ public class Partita extends AppCompatActivity {
                                 Toast.makeText(Partita.this, n + " è stato eliminato.", Toast.LENGTH_SHORT).show();
                             if (vitegioc == 2) {
                                 //Toast.makeText(Partita.this, checkedplayers.get(i).getFrase(), Toast.LENGTH_LONG).show();
-                                LayoutInflater inflater = getLayoutInflater();
+                                /*LayoutInflater inflater = getLayoutInflater();
 
                                 View layout = inflater.inflate(R.layout.custom_toast, (ViewGroup) findViewById(R.id.custom_toast_layout_id));
 
@@ -120,7 +126,20 @@ public class Partita extends AppCompatActivity {
                                 toast.setGravity(Gravity.BOTTOM, 0, 350);
                                 toast.setDuration(Toast.LENGTH_LONG);
                                 toast.setView(layout);
-                                toast.show();
+                                toast.show();*/
+                                checkedplayers.get(i).setEsclamazione(true);
+                                myadapter = new MyListAdapter(getApplicationContext(), R.layout.item_list, giocatorilist.getList());
+                                lista.setAdapter(myadapter);
+                                Handler handler = new Handler();
+                                final int index = i;
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        checkedplayers.get(index).setEsclamazione(false);
+                                        //myadapter = new MyListAdapter(getApplicationContext(), R.layout.item_list, giocatorilist.getList());
+                                        //lista.setAdapter(myadapter);
+                                    }
+                                }, 3000);
                             }
                             checkedplayers.get(i).decrementaVite();
                             myadapter = new MyListAdapter(getApplicationContext(), R.layout.item_list, giocatorilist.getList());
@@ -136,6 +155,35 @@ public class Partita extends AppCompatActivity {
             }
         });
 
+        lista.setDropListener(new DragSortListView.DropListener() {
+            @Override public void drop(int from, int to) {
+                int fromindex = from;
+                int toindex = to;
+                Giocatore movedItem = giocatorilist.get(from);
+                giocatorilist.remove(from);
+                if (from > to) --from;
+                giocatorilist.add(to, movedItem);
+                myadapter = new MyListAdapter(getApplicationContext(), R.layout.item_list, giocatorilist.getList());
+                lista.setAdapter(myadapter);
+
+                final SharedPreferences sharedPreferences = getSharedPreferences("InfoGenerali", MODE_PRIVATE);
+                final SharedPreferences.Editor editorgen = sharedPreferences.edit();
+                int idmazziere = sharedPreferences.getInt("ID Mazziere", 0);
+                Log.d("IDMAZZIERE", "" + idmazziere + " " + fromindex + " " + toindex);
+                if (fromindex == idmazziere - 1){
+                    idmazziere = toindex + 1;
+                    Log.d("IDMAZZDROP1", "" + idmazziere);
+                } else if (toindex > idmazziere - 1 && fromindex < idmazziere - 1){
+                    Log.d("IDMAZZDROP2", "" + idmazziere);
+                    idmazziere--;
+                } else if (toindex <= idmazziere - 1 && fromindex > idmazziere - 1){
+                    Log.d("IDMAZZDROP3", "" + idmazziere);
+                    idmazziere++;
+                }
+                editorgen.putInt("ID Mazziere", idmazziere);
+                editorgen.commit();
+            }
+        });
         lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -169,7 +217,7 @@ public class Partita extends AppCompatActivity {
                 dialog.show();
             }
         });
-        lista.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        /*lista.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 final int index = i;
@@ -179,7 +227,7 @@ public class Partita extends AppCompatActivity {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 int maniatt = getSharedPreferences("InfoGenerali", MODE_PRIVATE).getInt("Mani Attuali", 0);
                                 getSharedPreferences("InfoGenerali", MODE_PRIVATE).edit().putInt("ID Mazziere", index + 1).commit();
-                                getSharedPreferences("InfoGiocatori", MODE_PRIVATE).edit().putInt("Mazziere" + index + 1, maniatt).commit();
+                                getSharedPreferences("InfoGiocatori", MODE_PRIVATE).edit().putInt("Mazziere" + (index + 1), maniatt).commit();
                                 TextView tvMazziere = findViewById(R.id.TVMazziere);
                                 TextView tvNumMani = findViewById(R.id.TVNumCarte);
                                 String nomemazziere = giocatorilist.get(index).getName();
@@ -205,6 +253,54 @@ public class Partita extends AppCompatActivity {
                 dialog.show();
                 return true;
             }
+        });*/
+        TextView tvmazziere = findViewById(R.id.TVMazziere);
+        tvmazziere.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(Partita.this);
+                builder.setTitle("Chi deve fare le carte?");
+
+                final String[] players = new String[ingioco()];
+                int counter = 0;
+                for (int i = 0; i < giocatorilist.getSize(); i++){
+                    if (giocatorilist.get(i).getVite() > 0){
+                        players[counter] = giocatorilist.get(i).getName();
+                        counter++;
+                    }
+                }
+                int id = getSharedPreferences("InfoGenerali", MODE_PRIVATE).getInt("ID Mazziere", 0) - 1;
+                builder.setSingleChoiceItems(players, id, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        IDMAZZCHOSEN = giocatorilist.indexOf(giocatorilist.getFromName(players[which])) + 1;
+                    }
+                });
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        int maniatt = getSharedPreferences("InfoGenerali", MODE_PRIVATE).getInt("Mani Attuali", 0);
+                        getSharedPreferences("InfoGenerali", MODE_PRIVATE).edit().putInt("ID Mazziere", IDMAZZCHOSEN).commit();
+                        getSharedPreferences("InfoGiocatori", MODE_PRIVATE).edit().putInt("Mazziere" + IDMAZZCHOSEN, maniatt).commit();
+                        TextView tvMazziere = findViewById(R.id.TVMazziere);
+                        TextView tvNumMani = findViewById(R.id.TVNumCarte);
+                        String nomemazziere = giocatorilist.get(IDMAZZCHOSEN - 1).getName();
+                        String carte = "<b>" + maniatt + "</b>" + " carte a testa";
+                        tvNumMani.setText(Html.fromHtml(carte));
+                        if (nomemazziere.trim().toLowerCase().equals("bomber"))
+                            nomemazziere = "IL " + nomemazziere;
+                        nomemazziere = "Fa le carte " + "<b>" + nomemazziere + "</b> ";
+                        tvMazziere.setText(Html.fromHtml(nomemazziere));
+                        for (int e = 1; e <= giocatori; e++){
+                            if (e != IDMAZZCHOSEN)
+                                getSharedPreferences("InfoGiocatori", MODE_PRIVATE).edit().putInt("Mazziere" + e, 0).commit();
+                        }
+                    }
+                });
+                builder.setNegativeButton("Cancel", null);
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
         });
         /*ImageView imginfamate = findViewById(R.id.ImgInfamate);
         imginfamate.setOnClickListener(new View.OnClickListener() {
@@ -220,12 +316,13 @@ public class Partita extends AppCompatActivity {
 
     public void setTextMazziere(){
         Random r = new Random();
-        int randomint = r.nextInt(giocatori) + 1;
-        getSharedPreferences("InfoGenerali", MODE_PRIVATE).edit().putInt("ID Mazziere", randomint).commit();
-        getSharedPreferences("InfoGiocatori", MODE_PRIVATE).edit().putInt("Mazziere" + randomint, mani).commit();
+        int randomint = r.nextInt(giocatori); //+1
+        getSharedPreferences("InfoGenerali", MODE_PRIVATE).edit().putInt("ID Mazziere", randomint + 1).commit();
+        //getSharedPreferences("InfoGiocatori", MODE_PRIVATE).edit().putInt("Mazziere" + randomint, mani).commit();
+        giocatorilist.get(randomint).setCartemesc(mani);
         TextView tvMazziere = findViewById(R.id.TVMazziere);
         TextView tvNumMani = findViewById(R.id.TVNumCarte);
-        String nomemazziere = giocatorilist.get(randomint - 1).getName();
+        String nomemazziere = giocatorilist.get(randomint).getName();
         String carte = "<b>" + mani + "</b>" + " carte a testa";
         tvNumMani.setText(Html.fromHtml(carte));
         if (nomemazziere.trim().toLowerCase().equals("bomber"))
@@ -237,9 +334,9 @@ public class Partita extends AppCompatActivity {
 
     void AggiornamentoGenerali(){
         final SharedPreferences sharedPreferences = getSharedPreferences("InfoGenerali", MODE_PRIVATE);
-        final SharedPreferences shgioc = getSharedPreferences("InfoGiocatori", MODE_PRIVATE);
+        //final SharedPreferences shgioc = getSharedPreferences("InfoGiocatori", MODE_PRIVATE);
         final SharedPreferences.Editor editorgen = sharedPreferences.edit();
-        final SharedPreferences.Editor editorgioc = shgioc.edit();
+        //final SharedPreferences.Editor editorgioc = shgioc.edit();
             int maniattuali = sharedPreferences.getInt("Mani Attuali", 0);
             int manitotali = sharedPreferences.getInt("Numero Mani", 0);
             int gioc = sharedPreferences.getInt("Numero Giocatori", 0);
@@ -270,9 +367,14 @@ public class Partita extends AppCompatActivity {
                         idmazziere++;
             }
             Log.d("MANIATTUALI", "" + maniattuali);
-        Log.d("MANIMAZZIERE", "" + shgioc.getInt("Mazziere" + idmazziere, 0));
-        Log.d("MAZZIEREID", "Mazziere" + idmazziere);
-            if (shgioc.getInt("Mazziere" + idmazziere, 0) == maniattuali && maniattuali == 1){
+        //Log.d("MANIMAZZIERE", "" + shgioc.getInt("Mazziere" + idmazziere, 0));
+        //Log.d("MAZZIEREID", "Mazziere" + idmazziere);
+            if (giocatorilist.get(idmazziere - 1).getCartemesc() == maniattuali && maniattuali == 1){
+                giocatorilist.get(idmazziere - 1).setCartemesc(0);
+                if (idmazziere == gioc)
+                    idmazziere = 1;
+                else
+                    idmazziere++;
                 Log.d("terzo", "si");
                 while (giocatorilist.get(idmazziere - 1).getVite() == 0 && !isFinished()) {
                     if (idmazziere == gioc)
@@ -280,9 +382,9 @@ public class Partita extends AppCompatActivity {
                     else
                         idmazziere++;
                 }
-                editorgioc.putInt("Mazziere" + idmazziere, maniattuali);
+                giocatorilist.get(idmazziere - 1).setCartemesc(maniattuali);
             } else {
-                editorgioc.putInt("Mazziere" + idmazziere, maniattuali);
+                giocatorilist.get(idmazziere - 1).setCartemesc(maniattuali);
             }
             String s = giocatorilist.get(idmazziere-1).getName();
             if (s.toLowerCase().trim().equals("bomber")){
@@ -293,7 +395,6 @@ public class Partita extends AppCompatActivity {
 
             editorgen.putInt("ID Mazziere", idmazziere);
             editorgen.commit();
-            editorgioc.commit();
 
             int count = ingioco();
             if (count > 1){

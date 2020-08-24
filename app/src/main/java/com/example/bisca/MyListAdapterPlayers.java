@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ public class MyListAdapterPlayers extends ArrayAdapter<Giocatore> {
             ImageView imggioc = convertView.findViewById(R.id.IMPlayers);
             nomegioc.setTypeface(Typeface.createFromAsset(getContext().getAssets(), "fonts/montserratregular.ttf"));
             Giocatore c = getItem(position);
+            Log.d("ADAPTERNAME", c.getName());
             nomegioc.setText(c.getName());
             esclam.setText('"' + c.getFrase() + '"');
             if (c.getVite() == 0)

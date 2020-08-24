@@ -32,22 +32,6 @@ public class MainActivity extends AppCompatActivity {
         final EditText ednumvite = findViewById(R.id.ETNumVite);
         Button bnnuova = (Button) findViewById(R.id.BNnuovaPartita);
         bnnuova.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/montserratmedium.ttf"));
-        SharedPreferences sh = getSharedPreferences("InfoGiocatori", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sh.edit();
-        editor.putInt("Mazziere1", 0);
-        editor.putInt("Mazziere2", 0);
-        editor.putInt("Mazziere3", 0);
-        editor.putInt("Mazziere4", 0);
-        editor.putInt("Mazziere5", 0);
-        editor.putInt("Mazziere6", 0);
-        editor.putInt("Mazziere7", 0);
-        editor.putInt("Mazziere8", 0);
-        editor.putInt("Mazziere9", 0);
-        editor.putInt("Mazziere10", 0);
-        editor.putInt("Mazziere11", 0);
-        editor.putInt("Mazziere12", 0);
-        editor.putInt("Mazziere13", 0);
-        editor.commit();
         bnnuova.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -74,14 +74,24 @@
             android:id="@+id/tvmargin"
             android:layout_alignParentBottom="true"/>
 
-        <ListView
+        <com.mobeta.android.dslv.DragSortListView
+            app:drag_handle_id="@id/drag_handle"
+            android:clickable="true"
             android:id="@+id/listView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:choiceMode="singleChoice"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            app:drag_enabled="true"
+            app:drag_start_mode="onMove"
+            app:remove_enabled="true"
+            app:remove_mode="flingRemove"
+            app:sort_enabled="false"
             android:divider="#00FFFFFF">
 
-        </ListView>
+        </com.mobeta.android.dslv.DragSortListView>
 
     </RelativeLayout>
 

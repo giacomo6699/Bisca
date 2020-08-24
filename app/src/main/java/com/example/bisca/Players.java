@@ -103,11 +103,9 @@ public class Players extends AppCompatActivity {
                 giocatoriList.clear();
                 Iterable<DataSnapshot> children = DATABASE.child("Giocatori").getChildren();
                 for (DataSnapshot data : children) {
+                    giocatoriList.add(new Giocatore(data.getKey(), 0, data.getValue().toString()));
                     Log.d("IDDATABASE", data.getKey());
                     Log.d("VALUEDATABASE", "" + data.getValue());
-                    if (!data.getKey().equals("Size")) {
-                        giocatoriList.add(new Giocatore(data.getKey(), 0, data.getValue().toString()));
-                    }
                 }
                 adapter = new MyListAdapterPlayers(getApplicationContext(), R.layout.item_list_players, giocatoriList.getList());
                 lista.setAdapter(adapter);
