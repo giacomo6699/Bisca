@@ -133,24 +133,43 @@ public class Players extends AppCompatActivity {
         lista.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                final int index = i;
                 LayoutInflater mInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-                final View layout = mInflater.inflate(R.layout.dialog, null, false);
-                final EditText ed = layout.findViewById(R.id.ETDialog);
+                final View layout = mInflater.inflate(R.layout.dialogfrase, null, false);
+                final EditText ed = layout.findViewById(R.id.ETDialogFrase);
+                final EditText ednome = layout.findViewById(R.id.ETDialogNome);
                 ed.setHint("Esclamazione");
+                ed.setText(giocatoriList.get(i).getFrase());
+                ednome.setText(giocatoriList.get(i).getName());
+                final String frase = giocatoriList.get(i).getFrase();
                 final String nome = giocatoriList.get(i).getName();
                 Dialog dialog = new AlertDialog.Builder(Players.this).setView(layout).setCancelable(true).setTitle(Html.fromHtml("Esclamazione di " + nome))
                         .setPositiveButton("Salva", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 Map<String, Object> mapvalues = (Map<String, Object>) DATABASE.child("Giocatori").getValue();
-                                mapvalues.put(nome, ed.getText().toString());
-                                DATARef.child("Giocatori").updateChildren(mapvalues);
+                                if (nome.equals(ednome.getText().toString())){
+                                    mapvalues.put(nome, ed.getText().toString());
+                                    DATARef.child("Giocatori").updateChildren(mapvalues);
+                                } else {
+                                    Map<String, Object> mapwins = (Map<String, Object>) DATABASE.child("Vincitori").getValue();
+                                    int vittorie = Integer.parseInt(mapwins.get(nome).toString());
+                                    DATABASE.child("Vincitori").child(nome).getRef().removeValue();
+                                    DATABASE.child("Giocatori").child(nome).getRef().removeValue();
+                                    mapvalues.put(ednome.getText().toString(), ed.getText().toString());
+                                    mapvalues.remove(nome);
+                                    mapwins.put(ednome.getText().toString(), "" + vittorie);
+                                    mapwins.remove(nome);
+                                    DATARef.child("Giocatori").updateChildren(mapvalues);
+                                    DATARef.child("Vincitori").updateChildren(mapwins);
+                                }
                             }
                         })
-                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        .setNegativeButton("Elimina Giocatore", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.cancel();
+                                DATABASE.child("Vincitori").child(nome).getRef().removeValue();
+                                DATABASE.child("Giocatori").child(nome).getRef().removeValue();
                             }
                         })
                         .create();

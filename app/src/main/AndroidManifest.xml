@@ -11,7 +11,11 @@
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Regolamento"></activity>
+        <activity android:name=".Regolamento"
+            android:label="Regolamento"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity"></activity>
         <activity
             android:name=".Players"
             android:configChanges="orientation"
