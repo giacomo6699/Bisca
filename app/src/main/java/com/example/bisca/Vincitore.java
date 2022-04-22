@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -38,6 +39,11 @@ public class Vincitore extends AppCompatActivity {
         else
             albo = false;
         DATARef = FirebaseDatabase.getInstance().getReference();
+        final TextView tv1posto = (TextView) findViewById(R.id.PrimoPosto);
+        final TextView tv2posto = (TextView) findViewById(R.id.SecondoPosto);
+        final TextView tv3posto = (TextView) findViewById(R.id.TerzoPosto);
+        final GiocatoriList alboordinato = null;
+        final ListView listView = (ListView) findViewById(R.id.listaAlbo);
         DATARef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -72,15 +78,12 @@ public class Vincitore extends AppCompatActivity {
                         albogiocatori.add(new Giocatore(nome, 1));
                     }
                     albogiocatori.sortByLives();
-                    GiocatoriList alboordinato = new GiocatoriList();
+                    final GiocatoriList alboordinato = new GiocatoriList();
                     for (int i = albogiocatori.getSize() - 1; i >= 0; i--) {
                         alboordinato.add(albogiocatori.get(i));
                     }
                     if (albo)
                         DATARef.child("Vincitori").updateChildren(mapvalues);
-                    TextView tv1posto = (TextView) findViewById(R.id.PrimoPosto);
-                    TextView tv2posto = (TextView) findViewById(R.id.SecondoPosto);
-                    TextView tv3posto = (TextView) findViewById(R.id.TerzoPosto);
                     if (alboordinato.getSize() > 0) {
                         tv1posto.setText(alboordinato.get(0).getName() + ", " + alboordinato.get(0).getVite());
                         alboordinato.remove(0);
@@ -93,7 +96,6 @@ public class Vincitore extends AppCompatActivity {
                         tv3posto.setText(alboordinato.get(0).getName() + ", " + alboordinato.get(0).getVite());
                         alboordinato.remove(0);
                     }
-                    ListView listView = (ListView) findViewById(R.id.listaAlbo);
                     MyListAdapterAlbo adapter = new MyListAdapterAlbo(getApplicationContext(), R.layout.albo_item_list, alboordinato.getList());
                     listView.setAdapter(adapter);
                     datadone = true;
@@ -103,6 +105,30 @@ public class Vincitore extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
+            }
+        });
+        tv1posto.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                return true;
+            }
+        });
+        tv2posto.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                return true;
+            }
+        });
+        tv3posto.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                return true;
+            }
+        });
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                return true;
             }
         });
         TextView tv = findViewById(R.id.TVVincitore);
