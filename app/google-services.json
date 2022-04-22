@@ -1,0 +1,85 @@
+{
+  "project_info": {
+    "project_number": "222383803867",
+    "firebase_url": "https://allenamentobasket-2d119.firebaseio.com",
+    "project_id": "allenamentobasket-2d119",
+    "storage_bucket": "allenamentobasket-2d119.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:222383803867:android:db8d808c76d0c9e6",
+        "android_client_info": {
+          "package_name": "com.androidbegin.torneodeisestieri2016"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "222383803867-bb9u6cm3mfb7sgkpog80lvpglp37pc2v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.androidbegin.torneodeisestieri2016",
+            "certificate_hash": "7c1d1f5ef670888aa32a522727eca09f78d15e9a"
+          }
+        },
+        {
+          "client_id": "222383803867-rqt60vrm44g06gpbta2ifjt79hu0ukin.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.androidbegin.torneodeisestieri2016",
+            "certificate_hash": "00271ae8f8e636cc666590149fc11accf0f9cd8d"
+          }
+        },
+        {
+          "client_id": "222383803867-juif894pil3ckeko94dnks889avuugue.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCj9ajBDj3HgwLckPUbFQKZnpPhaii3OYo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "222383803867-juif894pil3ckeko94dnks889avuugue.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:222383803867:android:0d255d724bda5e78c92bfe",
+        "android_client_info": {
+          "package_name": "com.doli.bisca"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "222383803867-juif894pil3ckeko94dnks889avuugue.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCj9ajBDj3HgwLckPUbFQKZnpPhaii3OYo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "222383803867-juif894pil3ckeko94dnks889avuugue.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
